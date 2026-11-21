@@ -4,8 +4,8 @@ import Footer from "@/components/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Cesar | Personal Website",
-  description: "Personal website, digital garden, essays, and creative technology experiments.",
+  title: "Josue Jacobs | Personal Website",
+  description: "Personal website, technical essays, and software engineering projects by Josue Jacobs.",
 };
 
 export default function RootLayout({
@@ -15,9 +15,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className="min-h-screen flex flex-col font-sans selection:bg-accent selection:text-white">
+      <body className="min-h-screen flex flex-col font-sans selection:bg-accent selection:text-white antialiased">
         <Navbar />
-        <main className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-8 py-8 sm:py-12">
+        <main className="flex-1 max-w-3xl w-full mx-auto px-5 sm:px-8 py-10 sm:py-16">
           {children}
         </main>
         <Footer />

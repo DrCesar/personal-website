@@ -1,88 +1,70 @@
 import Link from "next/link";
-import { User, Cpu, Terminal, Compass, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 export default function AboutPage() {
   const tools = [
     { name: "Hardware", value: "MacBook Pro, 4K Display, Ergo Mechanical Setup" },
-    { name: "Editor", value: "Cursor, Neovim, Ghostty Terminal" },
-    { name: "Frontend", value: "Next.js, TypeScript, Tailwind CSS, Framer Motion" },
-    { name: "Graphics", value: "HTML5 Canvas, WebGL, GLSL Shaders" },
-    { name: "Deployment", value: "Vercel, GitHub Actions" },
+    { name: "Editor & Terminal", value: "Cursor, Neovim, Ghostty" },
+    { name: "Languages & Frameworks", value: "TypeScript, React, Next.js, Tailwind CSS" },
+    { name: "Graphics & Creative", value: "HTML5 Canvas, WebGL, GLSL Shaders" },
+    { name: "Infrastructure", value: "Vercel, GitHub Actions" },
   ];
 
   return (
-    <div className="flex flex-col gap-12 max-w-2xl">
+    <div className="flex flex-col gap-12">
       <div className="flex flex-col gap-3">
-        <span className="text-xs font-mono text-accent uppercase tracking-widest font-semibold flex items-center gap-1.5">
-          <User className="w-3.5 h-3.5 text-accent" />
-          About Me
-        </span>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
-          Cesar
+        <h1 className="text-2xl font-bold tracking-tight text-foreground">
+          About Josue Jacobs
         </h1>
-        <p className="text-base text-subtle leading-relaxed">
-          Design engineer, software architect, and creative technologist.
+        <p className="text-sm sm:text-base text-subtle leading-relaxed max-w-xl">
+          Design engineer and software architect working on web interfaces, distributed systems,
+          and interactive tools.
         </p>
       </div>
 
-      <section className="flex flex-col gap-4 text-base leading-relaxed text-foreground/90">
+      <section className="flex flex-col gap-4 text-sm sm:text-base leading-relaxed text-foreground/80 max-w-xl">
         <p>
-          I focus on building software that feels alive: combining rigorous engineering with
-          careful typography, fluid micro-interactions, and generative graphics.
+          I focus on crafting software that pairs rigorous architectural foundations with high editorial polish.
+          My background spans production engineering, design systems, and creative computing.
         </p>
         <p>
-          My work spans production web applications, open-source developer tooling, and creative coding
-          explorations with canvas and shaders. I believe that technical constraints, when embraced,
-          elevate the standard of interface design.
+          When building for the web, I believe that an intimate understanding of browser mechanics and
+          technical constraints allows design quality to reach its highest level.
         </p>
       </section>
 
-      {/* Tools & Environment Section (Inspired by Paul Stamatiou) */}
-      <section className="flex flex-col gap-4 pt-6 border-t border-surface-border">
-        <div className="flex items-center gap-2">
-          <Cpu className="w-4 h-4 text-accent" />
-          <h2 className="text-lg font-bold tracking-tight text-foreground">
-            Tools &amp; Work Environment
-          </h2>
-        </div>
-        <p className="text-sm text-subtle">
-          Inspired by colophons and gear lists from craft designers, here is what powers my daily work:
-        </p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+      {/* Tools / Colophon */}
+      <section className="flex flex-col gap-4 pt-8 border-t border-surface-border">
+        <h2 className="text-xs font-mono uppercase tracking-wider text-subtle font-semibold">
+          Tools &amp; Environment
+        </h2>
+        <div className="flex flex-col divide-y divide-surface-border/60">
           {tools.map((tool) => (
             <div
               key={tool.name}
-              className="p-3.5 rounded-xl border border-surface-border bg-surface/50 flex flex-col gap-1"
+              className="py-3 flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 text-xs"
             >
-              <span className="text-xs font-mono text-accent uppercase tracking-wider font-semibold">
-                {tool.name}
-              </span>
-              <span className="text-xs text-foreground/80 font-mono">
-                {tool.value}
-              </span>
+              <span className="font-mono text-subtle font-medium">{tool.name}</span>
+              <span className="font-mono text-foreground">{tool.value}</span>
             </div>
           ))}
         </div>
       </section>
 
       {/* Connect */}
-      <section className="flex flex-col gap-4 pt-6 border-t border-surface-border">
-        <div className="flex items-center gap-2">
-          <Compass className="w-4 h-4 text-accent" />
-          <h2 className="text-lg font-bold tracking-tight text-foreground">
-            Connect
-          </h2>
-        </div>
-        <div className="flex items-center gap-4 text-sm">
+      <section className="flex flex-col gap-3 pt-8 border-t border-surface-border text-xs font-mono">
+        <h2 className="uppercase tracking-wider text-subtle font-semibold">
+          Links
+        </h2>
+        <div className="flex items-center gap-4">
           <Link
             href="https://github.com/DrCesar/personal-website"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-accent hover:underline font-medium"
+            className="text-foreground hover:underline flex items-center gap-1"
           >
-            <span>GitHub Repository</span>
-            <ArrowUpRight className="w-3.5 h-3.5" />
+            <span>GitHub</span>
+            <ArrowUpRight className="w-3 h-3 opacity-60" />
           </Link>
         </div>
       </section>
