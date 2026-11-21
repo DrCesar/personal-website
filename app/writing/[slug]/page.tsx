@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Clock, Calendar, Tag } from "lucide-react";
 import InteractiveShaderWidget from "@/components/InteractiveShaderWidget";
+import ComparisonTable from "@/components/ComparisonTable";
+import RichText from "@/components/RichText";
 import { POSTS } from "@/lib/posts";
 
 export async function generateStaticParams() {
@@ -67,14 +69,58 @@ export default function PostPage({ params }: { params: { slug: string } }) {
 
             {section.paragraphs.map((p, pIdx) => (
               <p key={pIdx} className="text-base text-foreground/80 leading-relaxed">
-                {p}
+                <RichText>{p}</RichText>
               </p>
             ))}
+
+            {section.bullets && (
+              <ul className="flex flex-col gap-2 pl-1">
+                {section.bullets.map((item, bIdx) => (
+                  <li
+                    key={bIdx}
+                    className="relative pl-5 text-base text-foreground/80 leading-relaxed before:absolute before:left-0 before:top-[0.65em] before:h-1 before:w-1 before:rounded-full before:bg-accent"
+                  >
+                    <RichText>{item}</RichText>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {section.table && <ComparisonTable {...section.table} />}
+
+            {section.callout && (
+              <aside className="border-l-2 border-accent bg-accent-muted/20 px-4 py-3 rounded-r-lg text-[15px] text-foreground/85 leading-relaxed">
+                <RichText>{section.callout}</RichText>
+              </aside>
+            )}
 
             {section.hasInteractiveDemo && <InteractiveShaderWidget />}
           </section>
         ))}
       </div>
+
+      {post.content.sources && (
+        <section className="flex flex-col gap-3 pt-6 border-t border-surface-border">
+          <h2 className="text-xs font-mono uppercase tracking-wider text-subtle">
+            Sources
+          </h2>
+          <ol className="flex flex-col gap-1.5">
+            {post.content.sources.map((source, idx) => (
+              <li key={source.url} className="flex gap-2 text-[13px] leading-relaxed">
+                <span className="font-mono text-subtle shrink-0">{idx + 1}.</span>
+                <a
+                  href={source.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground/70 hover:text-accent transition-colors break-words"
+                >
+                  {source.label}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
 
       <div className="mt-12 pt-8 border-t border-surface-border flex items-center justify-between">
         <Link
