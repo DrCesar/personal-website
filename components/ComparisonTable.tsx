@@ -8,32 +8,34 @@ export interface TableData {
 
 export default function ComparisonTable({ caption, columns, rows }: TableData) {
   return (
-    <figure className="flex flex-col gap-3 my-2">
+    <figure className="flex flex-col gap-3 lg:-mx-24">
       <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
-        <table className="w-full min-w-[640px] border-collapse text-left">
+        <table className="w-full min-w-[720px] border-collapse text-left">
           <thead>
-            <tr className="border-b border-surface-border">
+            <tr className="border-b border-border">
               {columns.map((col) => (
                 <th
                   key={col}
                   scope="col"
-                  className="py-2.5 pr-4 text-[11px] font-mono font-medium uppercase tracking-wider text-subtle align-bottom"
+                  className="py-2 pr-4 align-bottom text-xs font-normal text-muted"
                 >
                   {col}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-surface-border/70">
+          <tbody className="divide-y divide-border">
             {rows.map((row, rowIdx) => (
-              <tr key={rowIdx} className="hover:bg-foreground/[0.015] transition-colors">
+              <tr key={rowIdx}>
                 {row.map((cell, cellIdx) => (
                   <td
                     key={cellIdx}
-                    className={`py-3 pr-4 text-[13px] leading-snug align-top ${
+                    className={`py-2.5 pr-4 align-top text-[13px] leading-snug ${
+                      cell.length <= 16 ? "whitespace-nowrap " : ""
+                    }${
                       cellIdx === 0
-                        ? "font-semibold text-foreground whitespace-nowrap"
-                        : "text-foreground/75"
+                        ? "font-medium"
+                        : "text-foreground/80"
                     }`}
                   >
                     <RichText>{cell}</RichText>
@@ -46,7 +48,7 @@ export default function ComparisonTable({ caption, columns, rows }: TableData) {
       </div>
 
       {caption && (
-        <figcaption className="text-xs text-subtle leading-relaxed">
+        <figcaption className="text-sm text-muted">
           {caption}
         </figcaption>
       )}

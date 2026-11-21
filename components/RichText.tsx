@@ -53,14 +53,14 @@ export default function RichText({ children }: { children: string }) {
                 href={token.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-accent underline decoration-accent/30 underline-offset-2 hover:decoration-accent transition-colors"
+                className="underline decoration-muted/50 underline-offset-2 transition-colors hover:decoration-foreground"
               >
                 {token.value}
               </a>
             );
           case "bold":
             return (
-              <strong key={idx} className="font-semibold text-foreground">
+              <strong key={idx} className="font-semibold">
                 {token.value}
               </strong>
             );
@@ -68,7 +68,7 @@ export default function RichText({ children }: { children: string }) {
             return (
               <code
                 key={idx}
-                className="font-mono text-[0.85em] bg-surface-border/50 text-foreground px-1.5 py-0.5 rounded"
+                className="rounded bg-foreground/[0.06] px-1 py-0.5 font-mono text-[0.875em]"
               >
                 {token.value}
               </code>

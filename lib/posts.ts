@@ -11,7 +11,6 @@ export interface PostSection {
   bullets?: string[];
   table?: PostTable;
   callout?: string;
-  hasInteractiveDemo?: boolean;
 }
 
 export interface Post {
@@ -20,8 +19,8 @@ export interface Post {
   description: string;
   date: string;
   readingTime: string;
-  tags: string[];
-  featured?: boolean;
+  /** Drafts render in `next dev` only. */
+  draft?: boolean;
   content: {
     lead: string;
     sections: PostSection[];
@@ -29,15 +28,14 @@ export interface Post {
   };
 }
 
-export const POSTS: Post[] = [
+const POSTS: Post[] = [
   {
     slug: "the-state-of-agent-ides-2026",
     title: "The State of Agent IDEs: Nobody Is Selling You an Agent Anymore",
     description: "T3 Code, Orca, Paradev, Herdr, and Kiro Crew all launched within a year of each other. None of them ships a model. A field guide to the agent control plane, and what it still gets wrong.",
     date: "2026-11-21",
     readingTime: "14 min read",
-    tags: ["AI", "Developer Tools", "Agents"],
-    featured: true,
+    draft: true,
     content: {
       lead: "I set out to compare five agentic IDEs and found that none of them is an IDE, and none of them is an agent. They are all the same thing wearing five different interfaces: a management layer for coding agents you already pay for somebody else to run.",
       sections: [
@@ -199,87 +197,17 @@ export const POSTS: Post[] = [
         { label: "Kiro pricing and credit model", url: "https://kiro.dev/pricing/" }
       ]
     }
-  },
-  {
-    slug: "crafting-reactive-canvas-interfaces",
-    title: "Crafting Reactive Canvas Interfaces with Physics and Shaders",
-    description: "Exploring the boundary between generative graphics and interface design, using HTML5 Canvas, springs, and WebGL fragments.",
-    date: "2026-11-15",
-    readingTime: "6 min read",
-    tags: ["Creative Tech", "Canvas", "WebGL"],
-    featured: true,
-    content: {
-      lead: "Interfaces do not have to be rigid rectangles. By infusing subtle physics and procedural noise into canvas layers, digital spaces begin to feel organic, reactive, and tactile.",
-      sections: [
-        {
-          heading: "The Soul of Interactive Graphics",
-          paragraphs: [
-            "Drawing inspiration from creative technologists like Justin Windle (Soulwire) and design engineers like Maxime Heckel, this exploration reconsiders what happens when a web page is treated like an interactive installation.",
-            "Instead of static backgrounds, we create responsive particle fields that deform based on cursor velocity, gravitational pulls, and ambient relaxation loops. The challenge is balancing visual fidelity with performance, targeting 60 frames per second on both low-power laptops and high refresh-rate monitors."
-          ],
-          hasInteractiveDemo: true
-        },
-        {
-          heading: "Spring Physics vs Linear Interpolation",
-          paragraphs: [
-            "Linear interpolation (lerp) produces smooth motion, but spring mechanics bring natural bounce, overshoot, and friction. When an element responds with physical weight, users intuitively understand the boundary of their actions.",
-            "By tuning stiffness and damping constants, we can make interactions feel snappy like a mechanical switch, or fluid like liquid mercury."
-          ]
-        },
-        {
-          heading: "Layering Typography on Generative Surfaces",
-          paragraphs: [
-            "A common trap in creative coding is allowing the generative layer to overpower the content. Paul Stamatiou emphasizes that editorial craft must always remain legible. The canvas belongs underneath, muted and restrained, serving as an atmospheric canvas rather than a distraction."
-          ]
-        }
-      ]
-    }
-  },
-  {
-    slug: "the-art-of-editorial-web-design",
-    title: "The Art of Editorial Web Design: Craft, Typography, and Whitespace",
-    description: "How high editorial standards from print translate into modern digital experiences with modern web typography.",
-    date: "2026-10-28",
-    readingTime: "5 min read",
-    tags: ["Design", "Typography", "Editorial"],
-    featured: true,
-    content: {
-      lead: "Great design is often about what you choose to leave out. Whitespace gives thoughts room to breathe, while deliberate typography guides the eye with rhythm and cadence.",
-      sections: [
-        {
-          heading: "Choosing the Right Typefaces",
-          paragraphs: [
-            "A well-crafted typeface carries emotional weight before a single word is consciously read. Pairing a clean geometric sans with an expressive editorial serif grounds your essays in timeless tradition while feeling crisp on high-density screens.",
-            "We focus on font features such as tabular figures for dates, contextual alternates, and optical sizing."
-          ]
-        },
-        {
-          heading: "Reading Modes and Ambient Lighting",
-          paragraphs: [
-            "Dark mode should never be pure black on pure white, which strains the retina. Instead, deep zinc, subtle warm undertones, and muted off-white type create an inviting nocturnal reading environment."
-          ]
-        }
-      ]
-    }
-  },
-  {
-    slug: "micro-interactions-and-tactile-ui",
-    title: "Micro-Interactions and Tactile Web Interfaces",
-    description: "Adding whimsy, feedback, and delightful tactile states to buttons, toggles, and cards without sacrificing speed.",
-    date: "2026-09-12",
-    readingTime: "4 min read",
-    tags: ["Frontend", "Animation", "UX"],
-    featured: false,
-    content: {
-      lead: "Small details make products memorable. Inspired by the CSS whimsy of Jhey Tompkins, we explore subtle haptics, spring animations, and multi-state interactions.",
-      sections: [
-        {
-          heading: "Tactile Feedback in a Glass World",
-          paragraphs: [
-            "On touchscreens and trackpads, users crave confirmation. A subtle scale reduction on active press, paired with a spring release, creates an uncanny sense of physical resistance."
-          ]
-        }
-      ]
-    }
   }
 ];
+
+const showDrafts = process.env.NODE_ENV !== "production";
+
+export function getPosts(): Post[] {
+  return POSTS.filter((post) => showDrafts || !post.draft).sort((a, b) =>
+    b.date.localeCompare(a.date),
+  );
+}
+
+export function getPost(slug: string): Post | undefined {
+  return getPosts().find((post) => post.slug === slug);
+}

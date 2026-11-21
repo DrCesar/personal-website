@@ -1,86 +1,98 @@
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import HeroCanvas from "@/components/HeroCanvas";
-import ProjectCard from "@/components/ProjectCard";
+import ListRow from "@/components/ListRow";
+import SocialIcon from "@/components/SocialIcon";
+import { formatShortDate } from "@/lib/date";
+import { EDUCATION, EXPERIENCE, type CvEntry } from "@/lib/cv";
+import { getPosts } from "@/lib/posts";
 import { PROJECTS } from "@/lib/projects";
-import { POSTS } from "@/lib/posts";
+import { SITE } from "@/lib/site";
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="flex flex-col gap-2">
+      <h2 className="text-muted">{title}</h2>
+      <ul className="flex flex-col">{children}</ul>
+    </section>
+  );
+}
+
+function CvSection({ title, entries }: { title: string; entries: CvEntry[] }) {
+  return (
+    <Section title={title}>
+      {entries.map((entry) => (
+        <ListRow
+          key={entry.detail}
+          title={entry.title}
+          description={entry.detail}
+          meta={entry.period}
+        />
+      ))}
+    </Section>
+  );
+}
 
 export default function HomePage() {
-  const featuredProjects = PROJECTS.slice(0, 3);
-  const featuredPosts = POSTS.slice(0, 3);
+  const posts = getPosts();
 
   return (
-    <div className="flex flex-col gap-16 sm:gap-20">
-      {/* Intro */}
-      <section className="flex flex-col gap-5">
-        <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
-          Josue Jacobs
-        </h1>
-        <p className="text-base sm:text-lg text-subtle leading-relaxed font-normal max-w-xl">
-          Design engineer and software architect. Building thoughtful web applications,
-          design systems, and creative computing experiments.
+    <div className="flex flex-col gap-14">
+      <header className="flex flex-col gap-4">
+        <h1 className="font-medium text-foreground">{SITE.name}</h1>
+        <p>
+          I&apos;m a software engineer at Amazon in Vancouver, working on royalty calculation
+          systems for Amazon&apos;s digital businesses. Before that I built machine learning and
+          recommendation systems at PayPal and Tigo in Guatemala.
         </p>
+        <p>
+          Lately I spend most of my time on agent-driven development: building tools for AI coding
+          agents and helping teams adopt them. I write here about what I learn.
+        </p>
+        <ul className="flex items-center gap-4 pt-1">
+          {SITE.links.map((link) => (
+            <li key={link.href}>
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={link.label}
+                title={link.label}
+                className="flex text-muted transition-colors hover:text-foreground"
+              >
+                <SocialIcon name={link.icon} />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </header>
 
-        {/* Ambient Canvas */}
-        <div className="pt-2">
-          <HeroCanvas />
-        </div>
-      </section>
-
-      {/* Selected Writing */}
-      <section className="flex flex-col gap-5">
-        <div className="flex items-baseline justify-between border-b border-surface-border pb-3">
-          <h2 className="text-xs font-mono uppercase tracking-wider text-subtle font-semibold">
-            Writing
-          </h2>
-          <Link
-            href="/writing"
-            className="text-xs font-mono text-subtle hover:text-foreground flex items-center gap-1 transition-colors"
-          >
-            <span>All posts</span>
-            <ArrowUpRight className="w-3 h-3" />
-          </Link>
-        </div>
-
-        <div className="flex flex-col">
-          {featuredPosts.map((post) => (
-            <Link
+      <Section title="Writing">
+        {posts.length === 0 ? (
+          <li className="py-2 text-muted">Nothing published yet.</li>
+        ) : (
+          posts.map((post) => (
+            <ListRow
               key={post.slug}
               href={`/writing/${post.slug}`}
-              className="group py-4 border-b border-surface-border/60 flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-4 hover:bg-foreground/[0.015] px-2 -mx-2 rounded-lg transition-colors"
-            >
-              <span className="text-sm font-semibold text-foreground group-hover:text-accent transition-colors">
-                {post.title}
-              </span>
-              <span className="text-xs font-mono text-subtle shrink-0">
-                {post.date}
-              </span>
-            </Link>
-          ))}
-        </div>
-      </section>
+              title={post.title}
+              meta={post.draft ? "Draft" : formatShortDate(post.date)}
+            />
+          ))
+        )}
+      </Section>
 
-      {/* Selected Projects */}
-      <section className="flex flex-col gap-5">
-        <div className="flex items-baseline justify-between border-b border-surface-border pb-3">
-          <h2 className="text-xs font-mono uppercase tracking-wider text-subtle font-semibold">
-            Projects
-          </h2>
-          <Link
-            href="/projects"
-            className="text-xs font-mono text-subtle hover:text-foreground flex items-center gap-1 transition-colors"
-          >
-            <span>All projects</span>
-            <ArrowUpRight className="w-3 h-3" />
-          </Link>
-        </div>
+      <Section title="Projects">
+        {PROJECTS.map((project) => (
+          <ListRow
+            key={project.title}
+            href={project.href}
+            title={project.title}
+            description={project.description}
+            meta={project.year}
+          />
+        ))}
+      </Section>
 
-        <div className="flex flex-col">
-          {featuredProjects.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
-          ))}
-        </div>
-      </section>
+      <CvSection title="Experience" entries={EXPERIENCE} />
+      <CvSection title="Education" entries={EDUCATION} />
     </div>
   );
 }

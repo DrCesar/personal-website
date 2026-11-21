@@ -1,31 +1,21 @@
 import type { Config } from "tailwindcss";
 
+const token = (name: string) => `rgb(var(--${name}) / <alpha-value>)`;
+
 const config: Config = {
   darkMode: "class",
-  content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+  content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-        surface: "var(--surface)",
-        "surface-border": "var(--surface-border)",
-        accent: {
-          DEFAULT: "var(--accent)",
-          muted: "var(--accent-muted)",
-        },
+        background: token("background"),
+        foreground: token("foreground"),
+        muted: token("muted"),
+        border: token("border"),
       },
       fontFamily: {
-        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
-        mono: ["var(--font-mono)", "monospace"],
+        sans: ["var(--font-inter)", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
         serif: ["Georgia", "Cambria", "serif"],
-      },
-      animation: {
-        "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
     },
   },
