@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #fbfbfa;
+  --foreground: #141413;
+  --surface: #ffffff;
+  --surface-border: #e8e8e6;
+  --accent: #2563eb;
+  --accent-muted: #dbeafe;
+  --subtle: #71716e;
+}
+
+.dark {
+  --background: #0c0d0e;
+  --foreground: #ededed;
+  --surface: #141618;
+  --surface-border: #23272b;
+  --accent: #38bdf8;
+  --accent-muted: #0c4a6e;
+  --subtle: #8a8f98;
+}
+
+body {
+  color: var(--foreground);
+  background-color: var(--background);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle selection styling */
+::selection {
+  background-color: #38bdf8;
+  color: #0c0d0e;
+}
+
+/* Glassmorphism helpers */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--surface-border);
+}
+
+.dark .glass {
+  background: rgba(20, 22, 24, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--surface-border);
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--surface-border);
+  border-radius: 4px;
+}
